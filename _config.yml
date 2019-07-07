@@ -13,10 +13,10 @@ future: true
 
 # SNS settings
 RSS: false
-weibo_username:     feely丶
-zhihu_username:     Mopecat
+weibo_username:     3308376933
+zhihu_username:     mopecat
 github_username:    Mopecat
-twitter_username:   Mopecat
+# twitter_username:   Mopecat
 #facebook_username:  huxpro
 #linkedin_username:  firstname-lastname-idxxxx
 
