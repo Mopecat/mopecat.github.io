@@ -113,5 +113,9 @@ friends: [
     {
         title: "小猫",
         href: "http://Catsaid.cn"
+    },
+    {
+        title: "zack",
+        href: "http://zengkaiz.github.io"
     }
 ]
