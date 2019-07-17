@@ -1,0 +1,150 @@
+---
+layout:     post
+title:      "20分钟gulp快速入门"
+subtitle:   "20分钟gulp快速入门"
+date:       2018-03-05 12:00:00
+author:     "Mopecat"
+header-img: "img/post-bg-infinity.jpg"
+catalog: true
+tags:
+    - Javascript
+    - 工程化
+---
+
+在互联网告诉发展的今天，自node出现后，我们前端也越来越大（心里美美哒~），同样带来的Web业务日益复杂化和多元化，模式也都想webPage模式转向webApp模式，拼几个页面搞几个jquery的插件就能搞一个完成一个项目的日子已经是很久远的曾经了，而且从前要实现压缩代码，压缩图片，上传到服务器等等等需要各种工具才能实现的功能，用起来很麻烦。所以出现了各种前端构建化工具也应运而生：`grunt,gulp,webpack`等已经成为现在前端开发工程师的必备技能之一。最新的`Parcel`也大出风头，因为Webpack 提供的“零配置”的进展缓慢和混沌不清，不过现在`webpack4.0`已经发布了，还不清楚未来的走向~
+好，说了这么多，该说说今天的主角了，虽然已经不是前沿的技术了，但是用起来非常的简单方便人性化，下面就来简单介绍介绍基础用法啦~
+### 安装
+在确保你的电脑里装了node的情况下，打开命令行执行以下代码：
+
+```
+ npm install --global gulp
+```
+全局安装gulp，打开命令行输入`gulp -v`有版本号则证明安装成功啦
+然后创建一个文件夹，名字随你啦~我们接下来的操作都在这个文件夹中进行啦~
+我创建的文件夹叫`gulpexample`，如果你的电脑中安装了git请进入这个文件夹然后右键选择`git bash here`，如果没有安装那就进入`cmd`然后进入相应的文件目录啦~然后~
+- 执行`npm init`之后会让你填名字啊 作者啊 描述啊 之类的 剩下的你就一顿回车，之后你的文件夹中就会自动生成一个`package.json`文件
+- 然后在命令行中执行`npm instal gulp --save-dev`在当前项目中安装gulp
+
+好啦，现在gulp就安装完毕了~接下来我们可以骚操作了
+- 在根目录创建一个文件命名为`gulpfile.js`（必须是这个，不能变哦）
+- 在根目录穿件一个文件夹`src`
+简单的介绍一下gulp的api
+
+```
+/*
+*
+*  gulp.task -- 定义任务
+*       gulp.task('任务名，命名随你啦',fn);
+*  gulp.src  -- 找到需要执行任务的文件
+*       gulp.src('要执行的文件的目录').pipe(要执行的api)
+*  gulp.dest -- 执行任务的文件的去处
+*       gulp.dest('文件的去处目录（若没有回创建文件夹）')
+*  gulp.watch -- 观察文件是否变化
+*       gulp.watch('要监控的文件目录下的文件','变化后要执行的task')
+*
+* */
+```
+然后我们简单的应用一下感受一下gulp的用法
+- 打开`gulpfile.js`输入如下代码：
+
+```
+var gulp = require('gulp');
+// 定义任务
+gulp.task('message',function(){
+    return console.log('gulp is running!');
+});
+```
+- 然后再当前文件夹目录下的命令行中执行 gulp message
+
+![](https://user-gold-cdn.xitu.io/2018/3/5/161f666d8b4a2dfb?w=821&h=167&f=png&s=22171)
+可以看到`gulp is running`证明任务已经执行了
+
+接下来为大家简单介绍一下：拷贝文件，压缩合并js，sass编译，压缩图片的用法。
+首先来安装上述功能相对应的插件(同样也是在相应的目录下执行哦)
+
+```
+npm install gulp-sass gulp-concat gulp-uglify gulp-imagemin --save-dev
+```
+安装可能会有些慢，如果实在受不了的话可以安装淘宝的镜像cnpm 然后用cnpm执行哦~
+cnpm的安装如下：
+
+```
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
+安装完gulp的插件后在项目根目录新建文件夹`src`，打开`gulpfile.js`开始配置~；
+- 第一步，引入插件
+
+```
+// 引入gulp及插件
+var gulp = require('gulp'); 
+var imagemin = require('gulp-imagemin'); // 图片压缩
+var uglify = require('gulp-uglify'); // js压缩
+var sass = require('gulp-sass');// sass编译
+var concat = require('gulp-concat'); // 代码合并
+```
+- 第二步，定义任务
+我们先来定义个简单的任务来再次熟悉一下`gulp`的用法~ 下面定义一个拷贝html的任务
+#### 任务一， 拷贝html
+
+```
+// 任务：拷贝html
+gulp.task('copyHtml',function(){
+    // 选取到src目录下的所有html文件 （为了测试效果，请自己再src目录下随便创建两个html文件咯）
+    gulp.src('src/*.html')
+        .pipe(gulp.dest('dist')); // 将html拷贝到dist目录下，没有dist会自动生成
+});
+```
+在命令行里执行 gulp copyHtml 就可以啦，赶紧去看看你的文件夹里成功拷贝了么？
+#### 任务二， 图片压缩
+准备工作：在src目录下新建images文件夹，在里面随便放几张图片
+```
+// 任务： 图片压缩
+gulp.task('imagemin',function(){
+    gulp.src('src/images/*')
+        .pipe(imagemin()) // 调用插件imagemin
+        .pipe(gulp.dest('dist/image')) // 压缩后的图片输出目录
+});
+```
+同样命令行执行 gulp imagemin 即可完成输出，
+现在你应该基本了解gulp的任务写法了，接下来的几个任务我就不细说了，直接上代码
+
+```
+// sass 编译 src目录下件文件夹sass然后在里面新建一个sass文件，按照sass的语法写一些样式
+gulp.task('sass',function(){
+    gulp.src('src/sass/*') // 获取sass文件（*.scss）
+        .pipe(sass().on('error',sass.logError)) // 执行sass插件，并检查错误
+        .pipe(gulp.dest('dist/css')); // 输出css文件的路径
+});
+
+// 合并压缩代码，src目录下新建文件夹js然后在里面创建几个js文件
+gulp.task('scripts',function(){
+    gulp.src('src/js/*.js') // 获取js文件
+        .pipe(concat('main.js')) // 合并文件为main.js
+        .pipe(uglify()) // 压缩js代码
+        .pipe(gulp.dest('dist/js')) // 输出合并压缩后的文件路径
+});
+```
+现在4个api我们已经用了3个了，还有一个监听的`watch`没有用，简单介绍一下，字面意思监听相应目录下的文件是否发生改变，如果改变执行某个任务，即一个参数为监听目录，另一个参数为要执行的任务，（watch是一个持续执行的任务结束的话是不会停止的哦）代码如下：
+
+```
+// 监听文件是否发生变化
+gulp.task('watch',function(){
+    gulp.watch('src/js/*.js',['scripts']); // 监听src/js/下的所有js文件，如果发生变化则执行任务scripts,下面同理
+    gulp.watch('src/sass/*',['sass']);
+    gulp.watch('src/*.html',['copyHtml']);
+    gulp.watch('src/images/*',['imageMin']);
+});
+```
+
+现在就已经有了5个任务了（算上最开始的`message`就6个了）每一个任务都要执行一遍命令行是不是很麻烦。如果任务更多了那就更烦了，不要担心，`gulp`为我们准备了默认任务`default`
+
+```
+// 定义默认任务 , 这里的默认任务default不能随便定义 只能是default,后面接受一个数组作为参数，传入默认执行的任务，后面还可以接受一个回调函数用以执行默认任务代码这里就不给做展示了
+gulp.task('default',['message','copyHtml','sass','scripts','imageMin','watch']);
+```
+定义好默认任务如上后，在命令行中输入`gulp`回车即可按照参数中的任务顺序全部执行。
+
+### 结语
+今天的gulp分享就告一段落啦~希望能对大家有所帮助。本次分享只是入门教程，简单的介绍了基础用法，实际项目中更复杂的用法日后会陆续分享给大家哒~如果喜欢给点个赞啦（比心心~~），后续预告~~本周还会出webpack的相关入门分享给大家，同样本文发表在[segmentfault](https://segmentfault.com/a/1190000013536962)、个人微信公众号Mopecat及个人博客[https://mopecat.cn/](https://mopecat.cn/)欢迎点赞关注浇水哦~
+ 
+  [1]: /img/bV4RyI
