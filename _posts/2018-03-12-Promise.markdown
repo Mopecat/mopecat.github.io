@@ -1,0 +1,151 @@
+---
+layout:     post
+title:      "Promise快速入门"
+subtitle:   "Promise快速入门"
+date:       2018-03-012 12:00:00
+author:     "Mopecat"
+header-img: "img/post-bg-js-version.jpg"
+catalog: true
+tags:
+    - Javascript
+---
+
+周五就想写这篇文章，但是无奈花花世界的诱惑太多……就一直拖到了今天，自责1e4遍;
+进入正题`Promise`:
+
+> Promise 对象用于表示一个异步操作的最终状态（完成或失败），以及其返回的值。
+
+上为[MDN][1]`Promise`的定义；
+ES6规定`Promise`是一个构造函数，用来生成`Promise`实例（就是跟new一个女朋友一样）；
+`Promise`意为‘承诺’，承诺是发生在未来且必须达成的事，对应`Promise`对象是一个保存着未来才会结束的异步操作的“容器”；
+
+`Promise`对象代表的异步操作有三个状态：
+- `pending` （进行中）
+- `fulfilled` (已成功)
+- `rejected` (已失败)
+`Promise`对象有一下两个特点：
+- 上述的三个状态一经改变则不会更改且任何时候都可以得到这个结果
+- 只有异步操作的结果可以决定当前状态的变化，其他任何操作都不改变`Promise`对象的状态，即承诺这个词的由来，也表现了程序猿的浪漫~~
+### 先说说基本用法然后再来实操~
+
+```
+const promise = new Promise(function(resolve, reject) {
+  // ... some code 立即执行
+
+  if (/* 异步操作成功 */){
+    resolve(value);// 将状态改为fulfilled 并将参数传递给then中的回调函数
+  } else {
+    reject(error);// 将状态改为rejected 并将参数传递给then/catch中的回调函数
+  }
+});
+// then方法接受两个参数分别对应两个状态的处理，其中对应rejected的参数可选，两个参数都接受上面promise对象传出的参数作为参数
+promise.then(function(value) {
+  // success 成功处理
+}, function(error) {
+  // failure 错误处理
+});
+```
+了解了基本用法我们来了解一下`Promise`到底有啥用啊，我的理解就是以同步的方式（链式调用）去处理异步操作（回调），在这个`Promise`对象出现之前我们是怎么处理异步操作的呢？
+举个栗子~：
+
+```
+console.log('start');
+setTimeout(function (name) {
+		  var fruitList = name + ',';
+
+		  setTimeout(function (name) {
+		    fruitList += name + ',';
+
+		    setTimeout(function (name) {
+		      fruitList += name + ',';
+
+		      setTimeout(function (name) {
+		        fruitList += name + ',';
+
+		        setTimeout(function (name) {
+		          fruitList += name;
+
+		          console.log(fruitList);
+
+		        }, 1, '西瓜');
+
+		      }, 1, '香蕉');
+
+		    }, 1, '橘子');
+
+          }, 1, '苹果');}, 1, '葡萄');
+          
+		  console.log('上面是个异步过程，所以我先出来，后面才是水果');
+```
+我这里只是简单的写了几层简单的定时器而已，如果要很多很多层并且稍微复杂一点的回调函数就很难以维护了且代码阅读很难受。所以`Promise`的出现就是为了链式的调用来实现这种异步操作同样以本例改为`Promise`的方式来一遍~：
+
+```
+console.log('start');
+var promise1 = new Promise((resolve,reject)=>{
+		  	setTimeout(resolve('葡萄'),1);
+		  });
+promise1.then(value=>new Promise((resolve,reject)=>setTimeout(resolve(value+',苹果'),1)))
+		.then(value=>new Promise((resolve,reject)=>setTimeout(resolve(value+',橘子'),1)))
+		.then(value=>new Promise((resolve,reject)=>setTimeout(resolve(value+',香蕉'),1)))
+		.then(value=>new Promise((resolve,reject)=>setTimeout(resolve(value+',西瓜'),1)))
+		.then(value=>{console.log(value)});
+
+console.log('上面是个异步过程，所以我先出来，后面才是水果');
+```
+其实本例中的reject参数可以省略，因为我默认他肯定会成功的了，额还有就是写`function`比较麻烦这里直接用了箭头函数~~恩……在科普一个小坑给你们，如果在`vue`中使用`promise`用箭头函数要比写`function`舒服很多，`function`中this指向的是`window`而不是`vue`实例~
+
+再来看看下面这个抛出错误的相关栗子：
+
+```
+console.log("start");
+		new Promise((resolve, reject) => {
+		    var data = [1,2,3,4,5,6,7];
+		    return resolve(data);
+		})
+		.then((result) => {
+		    var newResult = result.slice(1);   
+		    return newResult;
+		})
+		.then((result)=>{
+            console.log(result);
+			throw new Error('someting error');
+		})
+		.catch((value)=>{
+			console.log(value);// 抛出错误之后 执行catch操作 接受的参数是抛出的错误，其实.catch只是Promise.then(reject)的别名而已
+		})
+		.then((value) => {
+            console.log(value);// undefined 抛出错误后没有 return 所以这里是个undefined
+		    console.log('我任性，错了之后仍要执行');// catch之后仍然可以继续执行then操作 
+		});
+```
+注释上写的很清楚咯~~
+
+接下来在来个实际点的用法异步加载图片（原谅我其实是从阮一峰老师那里偷来的栗子吃）：
+
+```
+function loadImageAsync(url){
+		return new Promise((resolve,reject)=>{
+		var image = new Image();
+		image.onload = function(){
+			resolve(image);
+		}
+		image.onerror = function(){
+			reject(new Error('不能加载图片,url是'+ url));
+		}
+		image.src = url;
+	});
+}
+loadImageAsync('QQ图片20171114220539.png').then(value =>{
+	console.log(value);
+	document.body.append(value);
+});
+```
+
+由于最近确实是忙得头昏脑胀，就先简单的分享一波基础用法，剩下的关于promise的两种模式`Promise.all()`和`Promise.race()`等我改天再加或者另发一篇吧
+同样你也可以去这里学习了解一下：http://es6.ruanyifeng.com/#docs/promise#Promise-race
+
+
+
+  [1]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+

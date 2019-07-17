@@ -1,0 +1,132 @@
+---
+layout:     post
+title:      "函数柯里化"
+subtitle:   "函数柯里化"
+date:       2018-03-07 12:00:00
+author:     "Mopecat"
+header-img: "img/post-bg-js-version.jpg"
+catalog: true
+tags:
+    - Javascript
+---
+
+今天接触到了一个之前没听说过的东东，感觉很好玩~分享给大家~为了彻底的了解一下相关概念，特意拜读了一下张鑫旭大神的相关文章链接如下~：
+
+> http://www.zhangxinxu.com/wordpress/?p=3048
+
+感谢大神分享，本文将截取大神分享的部分及加上自己的小小理解~
+先发一波定义~（源自百度百科）
+
+> 在计算机科学中，柯里化（Currying）是把接受多个参数的函数变换成接受一个单一参数(最初函数的第一个参数)的函数，并且返回接受余下的参数且返回结果的新函数的技术。这个技术由 Christopher Strachey 以逻辑学家 Haskell Curry 命名的，尽管它是 Moses Schnfinkel 和 Gottlob Frege 发明的。
+
+大神用于函数柯里化用的比喻相当的形象非常有助于理解~
+“柯里化”就像某些官员的把戏，官员要弄7个老婆，碍于国策（一夫一妻）以及年老弟衰，表面上就1个老婆，实际上剩下的6个暗地里消化，代码表示如下：
+
+```
+var curring = function(fn){
+	// fn 指官员消化老婆的手段
+	var args = [].slice.call(arguments,1); // 截取arguments中的第一个生成一个数组，也就是当前语境下的明面上的合法老婆
+	return function(){
+		// 将已有的参数和新传进来的参数合并为一个数组，对应已有的合法老婆和新搞定的老婆
+		var newArgs = args.concat([].slice.call(arguments));
+		// 将所有的参数newArgs绑定给fn~ 
+		return fn.apply(null,newArgs);
+	}
+}
+
+// 下面为官员如何搞定7个老婆做测试
+// 获得合法老婆
+var getWife = currying(function(){
+	var allWife = [].slice.call(arguments);
+	console.log(allWife.join(';'))
+},"合法老婆");
+// 获得其他6个老婆
+getWife("小老婆1","小老婆2","小老婆3","小老婆4","小老婆5","小老婆6");
+// 换一批老婆 
+getWife("大老婆","小老婆","俏老婆","刁蛮老婆","乖老婆","送上门老婆");
+// 再换一批老婆
+getWife("超越韦小宝的老婆");
+```
+效果是这样的~
+
+![](https://user-gold-cdn.xitu.io/2018/3/7/16200bf6249356d2?w=490&h=76&f=png&s=4879)
+
+无论输入多少个参数，都会打印输出，且都会带着第一个参数~
+上文代码`fn.apply(null,newArgs)`中的`null`本是应该制定fn中this的指向的对象，没有所以就用null啦,算是一个小技巧~
+
+
+  
+理解理解之后再想想，这个东西有什么用啊~~ 
+柯里化有三个常见的应用：
+
+ - 参数复用（上文代码中的合法老婆）
+ - 提前返回
+这里举个很实用的例子，兼容现代浏览器以及IE浏览器的事件添加方法：
+
+```
+var addEvent = function(el, type, fn, capture) {
+    if (window.addEventListener) {
+        el.addEventListener(type, function(e) {
+            fn.call(el, e);
+        }, capture);
+    } else if (window.attachEvent) {
+        el.attachEvent("on" + type, function(e) {
+            fn.call(el, e);
+        });
+    } 
+};
+```
+上面的方法有什么问题呢？很显然，我们每次使用addEvent为元素添加事件的时候，(eg. IE6/IE7)都会走一遍if...else if ...，其实只要一次判定就可以了，怎么做？–柯里化。改为下面这样子的代码：
+
+```
+var addEvent = (function(){
+    if (window.addEventListener) {
+        return function(el, sType, fn, capture) {
+            el.addEventListener(sType, function(e) {
+                fn.call(el, e);
+            }, (capture));
+        };
+    } else if (window.attachEvent) {
+        return function(el, sType, fn, capture) {
+            el.attachEvent("on" + sType, function(e) {
+                fn.call(el, e);
+            });
+        };
+    }
+})();
+```
+初始addEvent的执行其实只实现了部分的应用（只有一次的if...else if...判定），而剩余的参数应用都是其返回函数实现的，典型的柯里化。
+- 第三个常见应用： 延迟计算
+
+```
+var curryWeight = function(fn) {
+    var _weight = [];
+    return function() {
+        if (arguments.length === 0) {
+            return fn.apply(null, _weight);
+        } else {
+            _weight = _weight.concat([].slice.call(arguments));
+        }
+    }
+};
+var weight = 0;
+var addWeight = curryWeight(function() {
+    var i=0; len = arguments.length;
+    for (i; i<len; i+=1) {
+        weight += arguments[i];
+    }
+});
+
+addWeight(2.3);
+addWeight(6.5);
+addWeight(1.2);
+addWeight(2.5);
+addWeight();    //  这里才计算
+
+console.log(weight);    // 12.5
+```
+先传入参数，直到调用的时候才执行计算~
+
+今天的分享就先到这里了~愿与各位共勉~
+
+
