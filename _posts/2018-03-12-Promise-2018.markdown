@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Promise快速入门"
-subtitle:   "Promise快速入门"
+subtitle:   ""
 date:       2018-03-12 12:00:00
 author:     "Mopecat"
 header-img: "img/post-bg-js-version.jpg"

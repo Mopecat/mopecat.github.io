@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "JavaScript回顾学习：目录篇"
-subtitle:   "JavaScript回顾学习：目录篇"
+subtitle:   "基础成就高度"
 date:       2018-06-03 12:00:00
 author:     "Mopecat"
 header-img: "img/post-bg-js-version.jpg"

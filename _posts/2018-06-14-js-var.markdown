@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "JavaScript 回顾学习：变量"
-subtitle:   "JavaScript 回顾学习：变量"
+subtitle:   "基础成就高度"
 date:       2018-06-14 12:00:00
 author:     "Mopecat"
 header-img: "img/post-bg-js-version.jpg"

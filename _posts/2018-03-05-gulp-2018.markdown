@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "20分钟gulp快速入门"
-subtitle:   "20分钟gulp快速入门"
+subtitle:   ""
 date:       2018-03-05 12:00:00
 author:     "Mopecat"
 header-img: "img/post-bg-infinity.jpg"
