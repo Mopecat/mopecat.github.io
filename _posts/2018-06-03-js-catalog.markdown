@@ -8,6 +8,7 @@ header-img: "img/post-bg-js-version.jpg"
 catalog: true
 tags:
     - Javascript 回顾学习
+    - Javascript
 ---
 
 ### 前言
