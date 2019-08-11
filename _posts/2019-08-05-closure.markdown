@@ -150,6 +150,7 @@ function remove() {
 上面的代码，我们只是把 `id` 为 `el` 的节点移除，但是变量 `el` 依然存在，该节点占有的内存无法被释放。
 ![](/img/in-post/post-closure/neicunxielou.jpg)
 我们需要在 `remove` 方法中添加：`el = null`，这样更为稳妥
+
 🌰2：
 ```
 var el = document.getElementById('el')
@@ -163,6 +164,7 @@ button.addEventListener('click', function() {
 el.innerHTML = ''
 ```
 这段代码执行后，因为 `element.innerHTML = ''`，`button` 元素已经从 DOM 中移除了，但是由于其事件处理句柄还在，所以依然无法被垃圾回收。我们还需要增加 `removeEventListener`，防止内存泄漏。
+
 🌰3：
 ```
 function func1() {
