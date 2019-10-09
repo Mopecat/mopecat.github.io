@@ -3,16 +3,9 @@
 
 <!-- ##### My Programming Languages Spectrum -->
 
+> 人生就是马拉松：“一直在跑，一直在成长。”
+> 当下一秒跑得很快，不代表就成功了。
+> 要一直忍受住疲惫，时刻保持速度，才能获得最后的冠军。
 
+要一直忍受住疲惫，时刻保持住速度。加油啊我！
 <!-- ##### Talks -->
-
-
-[1]: //huangxuan.me/2015/07/09/js-module-7day/
-[2]: //huangxuan.me/2015/12/28/css-sucks-2015/
-[3]: //huangxuan.me/2016/06/05/pwa-in-my-pov/
-[4]: //huangxuan.me/2016/10/20/pwa-qcon2016/
-[5]: //huangxuan.me/2016/11/20/sw-101-gdgdf/
-[6]: https://yanshuo.io/assets/player/?deck=58ac8598b123db0067292f92 "PWA Rehashing"
-[7]: https://yanshuo.io/assets/player/?deck=593ad6fbfe88c2006a0a0d6d "The State of PWA"
-[8]: https://yanshuo.io/assets/player/?deck=594d673d570c357d0698a950 "Building PWA"
-[9]: //huangxuan.me/jsconfcn2017/
