@@ -29,4 +29,4 @@ tags:
 
 [实战例题，对应解析及结论][1] <==点点点这里啊 可以把代码下载下来自行调试解析
 
-[1]:https://github.com/Mopecat/FEE-Advance-Summary/tree/master/Javascript%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%BC%BA%E5%8C%96/this%E7%AF%87
+[1]:https://github.com/Mopecat/FEE-Advance-Summary/tree/master/Javascript%E5%BC%BA%E5%8C%96/this%E7%AF%87
