@@ -50,4 +50,4 @@ tags:
   [1]: https://segmentfault.com/a/1190000015291336
   [2]: https://mopecat.cn/
   [3]: /img/bVbckrr
-  [4]: http://127.0.0.1:4000/2019/07/27/type/
+  [4]: https://segmentfault.com/a/1190000019894503
