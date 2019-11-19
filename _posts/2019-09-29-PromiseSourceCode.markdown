@@ -128,6 +128,59 @@ class Promise{
 }
 ```
 这样一个架子就出来了，然后我们继续完善一下细节，在从上面看到的那些已经写出来的代码继续分析。
-1. 回到🌰-1，我们可以看到执行器中是可以抛出错误的，而在改变状态之前抛出错误是会被捕捉到的。用什么捕捉错误？聪明如你一定会想到 => `try,catch`呀
-2. 执行器传入的两个方法`resolve`和`reject`，需要将这两个方法定义在执行器之前，然后我们思考一下，这个方法里应该做些什么呢？
+6. 回到🌰-1，我们可以看到执行器中是可以抛出错误的，而在改变状态之前抛出错误是会被捕捉到的。用什么捕捉错误？聪明如你一定会想到 => `try,catch`呀
+7. 执行器传入的两个方法`resolve`和`reject`，需要将这两个方法定义在执行器之前，然后我们思考一下，这个方法里应该做些什么呢？
 这里解析一下： 首先我们可以知道，这两个方法分别对应着两个状态，所以我们可以知道，调用对应的方法时应该修改为对应的状态。其次我们可以知道，调用方法时是可以传参的，那我们需要把这个参数保存下来，因为后面的`then`方法的回调方法中的参数就是数据对应🌰-1中的就是'success'，传到`then`中的`data`
+
+```
+// 2. 有三种固定状态 => 常量
+const PENGDING = "PENGDING" // 等待状态
+const FULFILLED = "FULFILLED" // 成功状态
+const REJECTED = "REJECTED" // 失败状态
+// 1. 是个类
+class Promise{
+    // 3. 创建类的时候传递一个立即执行的执行器 => 传入个方法在 `constructor`中调用 
+    constructor(excutor){
+        // 5. 由第4条可知需要有一个用来标记状态的属性可以在then中被访问到 => 类需要有个属性 `status`来标记状态，由上面特点可知，默认的状态是`PENDING(等待)`
+        this.status = PENGDING
+        // 7.定义resolve和reject 太长了哈 我就简写了一下
+        this.value = undefined // 分别定义下 成功和失败传入的值
+        this.reason = undefined
+        const resolve = value=>{
+          // 需要先判断一下当前状态是不是PENGDING状态，如果不是PENGDING证明已经更改过状态了，那么就不做处理
+          if(this.status === PENGDING){
+            this.value = value; // 将传入的状态存储在this.value上
+            this.status = FULFILLED; // 修改当前实例的状态为 成功状态
+          }
+        }
+        // 同理 reject与上面类似
+        const reject = reason=>{
+          if(this.status === PENGDING){
+            this.reason = reason; 
+            this.status = REJECTED; // 修改当前实例的状态为 失败状态
+          }
+        }
+        // 执行器
+        // 6. 回到🌰-1，我们可以看到执行器中是可以抛出错误的，而在改变状态之前抛出错误是会被捕捉到的。用什么捕捉错误？聪明如你一定会想到 => `try,catch`呀
+        try{
+          excutor(resolve,reject)
+        }catch(e){
+          // 如果抛出错误，promise就会走失败的逻辑，也就是走reject
+          reject(e)
+        }
+        
+    }
+    // 4. 每个`promise`都有一个`then`方法 => 方法在原型上。then有两个参数，都是方法，一个成功状态调用，一个失败状态调用
+    then(onFulfilled,onRejected){
+        if(this.status === FULFILLED){
+            // 7.需要将对应成功的参数传入到then的成功状态的回调方法中
+            onFulfilled(this.value)
+        }
+        if(this.status === REJECTED){
+            // 7.需要将对应失败的参数传入到then的失败状态的回调方法中
+            onRejected(this.reason)
+        }
+    }
+}
+```
+这样下来的一个简易版本的`promise`基本完事了，为什么说基本完事了呢？如果你在敲的话，把上面的那两个🌰在这里用一下，你就会看到，🌰-1 是ok的 但是🌰-2就不行了，有问题了，没打印也没报错，恩？这是什么鬼？那么请思考为什么`then`调用的了没有报错也没有打印呢？为什么呢？因为异步了呀，`resolve`是在`then`调用之后才执行的，`then`调用的时候当前`promise`实例是什么状态？由于没有调用`resolve`和`reject`，所以当前实例的状态仍然是 `PENGDING`
