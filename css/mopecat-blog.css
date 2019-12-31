@@ -766,6 +766,9 @@ samp {
 }
 .post-container .pager li > a {
   width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .post-container .pager li > a > span {
   color: #cccccc;
@@ -1030,7 +1033,7 @@ samp {
   .intro-header .site-heading,
   .intro-header .post-heading,
   .intro-header .page-heading {
-    padding: 200px 0;
+    padding: 150px 0;
   }
 }
 .intro-header .site-heading {
