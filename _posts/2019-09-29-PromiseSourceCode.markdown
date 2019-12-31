@@ -184,6 +184,6 @@ class Promise{
 }
 ```
 这样下来的一个简易版本的`promise`基本完事了，但是为什么说基本完事了呢？
-![感情不够呗](https://mopecat.cn/img/20190126124608_FQjK2.jpeg)
+![感情不够呗](https://mopecat.cn/img/in-post/meme/20190126124608_FQjK2.jpeg)
 如果你在敲的话，把上面的那两个🌰在这里用一下，你就会看到，🌰-1 是ok的 但是🌰-2就不行了，有问题了，没打印也没报错，恩？这是什么鬼？那么请思考为什么`then`调用的了没有报错也没有打印呢？为什么呢？因为异步了呀，`resolve`是在`then`调用之后才执行的，`then`调用的时候当前`promise`实例是什么状态？由于没有调用`resolve`和`reject`，所以当前实例的状态仍然是 `PENGDING`
-![鼓掌](https://mopecat.cn//img/20160205143722_dCrVy.gif)
+![鼓掌](https://mopecat.cn/img/in-post/meme/20160205143722_dCrVy.gif)
