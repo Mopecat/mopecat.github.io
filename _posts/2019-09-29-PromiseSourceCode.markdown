@@ -1,5 +1,6 @@
 ---
 layout:     post
+comments: true
 title:      "JavaScript 基础强化：手写Promise源码"
 subtitle:   "基础成就高度"
 date:       2019-09-29 12:00:00
