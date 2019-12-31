@@ -11,7 +11,7 @@ tags:
     - 学习笔记
 ---
 
- ### HTTP 缓存
+### HTTP缓存
 
   按失效策略分类：
 
@@ -36,7 +36,7 @@ tags:
 
     关于 `Cache-control` 取值总结，我们可以参考 `Google developer` 的一个图示
 
-    ![缓存策略流程图](../img/in-post/post-cache/cache.jpg)
+    ![缓存策略流程图](https://mopecat.cn/img/in-post/post-cache/cache.jpg)
 
 - 协商缓存
 
@@ -78,7 +78,7 @@ tags:
 
 由上述内容我们看出：为了使缓存策略更加可靠，灵活，HTTP 1.0 版本 和 HTTP 1.1 版本的缓存策略一直是在渐进增强的。这也意味着 HTTP 1.0 版本 和 HTTP 1.1 版本关于缓存的特性可以同时使用，强制缓存和协商缓存也会同时使用。当然他们在混合使用时有优先级的限制，我们通过下面这个流程图来做一个总结：
 
-![缓存全流程](../img/in-post/post-cache/cache-all.jpg)
+![缓存全流程](https://mopecat.cn/img/in-post/post-cache/cache-all.jpg)
 
 按缓存位置分类：
 
