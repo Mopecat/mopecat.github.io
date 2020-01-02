@@ -71,8 +71,8 @@ netease_comment: false
 ba_track_id: 171739fa235a7b62104d26b4d9e014ae
 
 # Google Analytics
-# ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-# ga_domain: mopecat.cn
+ga_track_id: 'UA-155261519-1'            # Format: UA-xxxxxx-xx
+ga_domain: mopecat.cn
 
 
 
