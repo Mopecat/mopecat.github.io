@@ -21,13 +21,13 @@ tags:
 
 * 一个函数的参数是函数 
 
-```
+```javascript
 function a(){}
 a(()=>{})
 ```
 * 一个函数返回一个函数
 
-```
+```javascript
 function b(){
     return function(){}
 }
@@ -36,7 +36,7 @@ function b(){
 结合上面两种定义，我们写一个封装功能时常用的例子
 
 `before`方法:我们希望在调用一个方法之前先调用`before`函数，然后在调用核心功能函数（一步一个注释，像我这么细心的老大哥可不多咯）
-```
+```javascript
 // 核心功能函数
 const core = ()=>{
     console.log('World') // 就这么一个打印信息 一点都不核心好吗？对付看看吧肚子里的油水有限
@@ -52,7 +52,7 @@ const newCore1 = core.before(()=>{
 // 这样你就看出来了吧 我们实现了 核心功能core的复用 然后是怎么实现的呢
 ```
 要实现上面的功能的代码其实很简单
-```
+```javascript
 // 在原型上扩展一个方法
 Function.prototype.before = function(beforeFn){ // 参数是个函数
     return ()=>{ // 返回一个函数 调用传入的参数 然后在调用core
@@ -62,7 +62,7 @@ Function.prototype.before = function(beforeFn){ // 参数是个函数
 }
 ```
 接下来就可以看看效果了，全部是这样的如下：
-```
+```javascript
 // 在原型上扩展一个方法
 Function.prototype.before = function(beforeFn) { // 参数是个函数
   return () => {    // 返回一个函数 调用传入的参数 然后在调用core
@@ -90,7 +90,7 @@ newCore1(); // Fuck the World
 ```
 什么？你还想传递参数啊？哎呀 你可真是个小机灵鬼
 下面是传递参数的版本
-```
+```javascript
 Function.prototype.before = function(beforeFn) { 
   return (...arg) => { // 箭头函数不止没有this, 也没有arguments 所以我用运算符将所有的参数收集成一个数组
     beforeFn();
@@ -134,7 +134,7 @@ newCore1(); // Fuck the World []
 遮掩是不是好理解一点？？？（大概吧 😯）
 
 来说回代码，下面这个例子就是的发布订阅的简单应用了
-```
+```javascript
 const perform = (anymethod, wrappers) => { // wrappers是下面传进来的数组
   wrappers.forEach(wrap => {
     wrap.initilizae();
@@ -168,7 +168,7 @@ perform(() => {
 // 输出结果应该是 开始时1 开始时2 核心功能 结束时1 结束时2
 ```
 那我们再来看一下另一个例子，用发布订阅处理并发问题，但是在此之前先来看看计数器方式处理并发问题的例子了解一下这个故事的前因后果（想跟我发生故事吗？）
-```
+```javascript
 // 这段代码请在node环境下执行 或者vscode 安装插件 code runner 并在你当前项目的根目录下 新建两个文件，name.txt age.txt 
 const fs = require('fs')
 let info = {}
@@ -190,7 +190,7 @@ fs.readFile("age.txt", "utf8", (err, data) => {
 });
 ```
 再看看优雅的实现方式，应用了高阶函数，可见高阶函数在实际应用中还是非常广泛的
-```
+```javascript
 // 先写一个after函数
 const after = (times,fn) => () => --times === 0 && fn() // 返回一个方法 当参数times减少为0的时候执行回调方法
 let info = {}
@@ -207,7 +207,7 @@ fs.readFile("age.txt", "utf8", (err, data) => {
 ```
 现在故事情节了解的差不多了吧，我们来看看发布订阅的实现方式吧
 
-```
+```javascript
 // 用发布订阅的方式实现
 // 用on订阅，emit来发布实现
 let e = {
@@ -252,7 +252,7 @@ fs.readFile("age.txt", "utf8", (err, data) => {
 
 下面我们准备写一个类型判断的方法，一般的类型判断怎么实现呢？
 
-```
+```javascript
 Object.prototype.toString.call() 
 // 随便试两个 就两个
 console.log(Object.prototype.toString.call("123")); // [object String]
@@ -261,7 +261,7 @@ console.log(Object.prototype.toString.call([123])); // [object Array]
 
 然后我们再看看一般的封装是怎么实现的
 
-```
+```javascript
 const checkType = (content, type) => {
   return Object.prototype.toString.call(content) === `[object ${type}]`;
 };
@@ -278,7 +278,7 @@ console.log(b); // true
 
 所以我们要尽量不要每次判断都自己写类型，所以我们应用 **函数柯里化** 的时候到了，先来个基础版的尝尝鲜
 
-```
+```javascript
 // 柯里化实现（简单基础版）
 const checkType = type => {
     return content => {
@@ -294,7 +294,7 @@ console.log(isString("123")) // true
 
 所以上面是基础版嘛，简单补充一下就是下面这个样子了
 
-```
+```javascript
 const checkType = type => {
     return content => {
         return Object.prototype.toString.call(content) === `[object ${type}]`
@@ -316,7 +316,7 @@ TYPES.forEach( type => {
 
 继续看码了，我敲代码千百遍，代码对我如初见~，当然这种事不会的，正所谓码敲百遍，其意自现。没事多敲敲，肯定好处多多啊
 
-```
+```javascript
 // 被观察者
 class Subject {
   constructor() {

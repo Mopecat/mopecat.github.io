@@ -41,7 +41,7 @@ tags:
 如果仅声明而没有赋值的变量，默认值为：`undefined` 在后面数据类型会详细说~。~
 可以同时声明多个变量，并直接赋值，用逗号隔开即可。如上文中的三个坑可以这样写
 
-```
+```javascript
 var keng = '坑',
     keng2 = '第二个坑',
     keng3 = '没有声明就赋值的第三个坑是没有灵魂的坑'
@@ -54,7 +54,7 @@ var keng = '坑',
 需要注意的是
 
  1. 局部变量的优先级高于同名的全局变量，即如果在函数内声明一个局部变量或者函数参数中带有的变量和全局变量重名，那么全局变量会被局部变量所遮盖。
-    ```
+    ```javascript
     var keng = '坑是个好坑，能不能用就不知道了';
     function changeKeng(){
         var keng = '好坑也不用你';
@@ -65,7 +65,7 @@ var keng = '坑',
  2. 声明提前
     在局部作用域声明变量的时候会将变量提升至当前作用域的顶部。
     敲个栗子：
-    ```
+    ```javascript
     var keng = '这是个全局的坑';
     function quanyikuaidi(){
         console.log(keng);   // 输出 'undefine' 而不是 '这是一个全局的坑'
@@ -75,7 +75,7 @@ var keng = '坑',
     ```
 
     以上代码等同于
-    ```
+    ```javascript
     var keng = '这是个全局的坑';
     function quanyikuaidi(){
         var keng;               // 在函数顶部声明变量 keng

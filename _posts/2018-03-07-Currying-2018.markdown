@@ -22,7 +22,7 @@ tags:
 大神用于函数柯里化用的比喻相当的形象非常有助于理解~
 “柯里化”就像某些官员的把戏，官员要弄7个老婆，碍于国策（一夫一妻）以及年老弟衰，表面上就1个老婆，实际上剩下的6个暗地里消化，代码表示如下：
 
-```
+```javascript
 var curring = function(fn){
 	// fn 指官员消化老婆的手段
 	var args = [].slice.call(arguments,1); // 截取arguments中的第一个生成一个数组，也就是当前语境下的明面上的合法老婆
@@ -63,7 +63,7 @@ getWife("超越韦小宝的老婆");
  - 提前返回
 这里举个很实用的例子，兼容现代浏览器以及IE浏览器的事件添加方法：
 
-```
+```javascript
 var addEvent = function(el, type, fn, capture) {
     if (window.addEventListener) {
         el.addEventListener(type, function(e) {
@@ -78,7 +78,7 @@ var addEvent = function(el, type, fn, capture) {
 ```
 上面的方法有什么问题呢？很显然，我们每次使用addEvent为元素添加事件的时候，(eg. IE6/IE7)都会走一遍if...else if ...，其实只要一次判定就可以了，怎么做？–柯里化。改为下面这样子的代码：
 
-```
+```javascript
 var addEvent = (function(){
     if (window.addEventListener) {
         return function(el, sType, fn, capture) {
@@ -98,7 +98,7 @@ var addEvent = (function(){
 初始addEvent的执行其实只实现了部分的应用（只有一次的if...else if...判定），而剩余的参数应用都是其返回函数实现的，典型的柯里化。
 - 第三个常见应用： 延迟计算
 
-```
+```javascript
 var curryWeight = function(fn) {
     var _weight = [];
     return function() {

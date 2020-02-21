@@ -19,7 +19,7 @@ tags:
 任何语言都有作用域这个概念，作用域是什么呢？说白了也就是**寻找变量的规则**，在javascript中现在为止有三种作用域：**函数作用域**，**全局作用域**，**块级作用域**
 #### 函数作用域和全局作用域
 通过几个🌰总结一下
-```
+```javascript
 function a(){
     var aa = '函数作用域';
     console.log(aa)
@@ -27,7 +27,7 @@ function a(){
 a()
 ```
 变量`aa`在函数 `a`的作用域内，所以执行`a()`可以正常输出 `函数作用域`
-```
+```javascript
 var bb = '全局作用域'
 function b(){
     console.log(bb)
@@ -35,7 +35,7 @@ function b(){
 b()
 ```
 执行函数`b`，在函数`b`自身作用域中没有变量`bb`，所以向外扩大作用域寻找，在外层的全局作用域中找到了变量`bb`因此成功输出`全局作用域`
-```
+```javascript
 function a(){
     var a = '函数一'
 }
@@ -45,7 +45,7 @@ function b(){
 b()
 ```
 执行上述代码会报错，因为每一个函数都是一个单独的作用域，在函数`b`中没有找到变量`a`同样在外层的全局作用域中也没有找到，所以执行`b`函数报错
-```
+```javascript
 var b = '全局'
 function func1() {
     var b = '一层'
@@ -68,7 +68,7 @@ func1()
 块级作用域是`ES6`后才出现的由`let` 和 `const` 声明的变量，不涉及到变量提升，作用在块级作用域中，也就是代码块中，再通俗一点就是两个大括号中(当然这种书法并不全面)
 由于块级作用域的变量不涉及变量提升所以出现了一个新鲜的概念，比如 **暂存死区**
 由`let`和`const`声明的变量不存在变量提升，比如下面这种情况
-```
+```javascript
 function a(){
     console.log(aa)
     let aa = 111
@@ -76,7 +76,7 @@ function a(){
 ```
 会报错，以上在这个块级作用域内`let aa`之前的区域被称为 **暂存死区**
 还要一种情况就是函数参数也会有暂存死区的问题，不过这种情况比较少见
-```
+```javascript
 function a(arg1 = arg2, arg2){
     console.log(arg1,arg2)
 }
@@ -96,7 +96,7 @@ Javascript执行主要分为两个阶段：**代码预编译阶段**，**代码�
 ### 调用栈
 总的来说就像是进一个只有一个门的大巴车（调用栈），先上车的坐最后面，依次来坐，那下车的时候（调用结束后）最先上车的一个就要最后一个下车。
 看码好了：
-```
+```javascript
 function f1() {
   f2()
 }
@@ -125,7 +125,7 @@ f1()
 * 释放内存空间
 
 🌰：
-```
+```javascript
 let a = '分配存储空间'
 console.log(a) // 使用内存空间
 a = null // 释放内存空间
@@ -139,7 +139,7 @@ a = null // 释放内存空间
 > 内存泄漏是指内存空间明明已经不再被使用，但由于某种原因并没有被释放的现象。
 
 这是一个非常“玄学”的概念，因为内存空间是否还在使用，某种程度上是不可判定问题，或者判定成本很高。内存泄漏危害却非常直观：它会直接导致程序运行缓慢，甚至崩溃。这个时候就得开始举个🌰了：
-```
+```javascript
 let el = document.getElementById("el")
 el.class = 'el-class'
 // 移除 element 节点
@@ -152,7 +152,7 @@ function remove() {
 我们需要在 `remove` 方法中添加：`el = null`，这样更为稳妥
 
 🌰2：
-```
+```javascript
 var el = document.getElementById('el')
 el.innerHTML = '<button id="button">点我呀</button>'
 
@@ -166,7 +166,7 @@ el.innerHTML = ''
 这段代码执行后，因为 `element.innerHTML = ''`，`button` 元素已经从 DOM 中移除了，但是由于其事件处理句柄还在，所以依然无法被垃圾回收。我们还需要增加 `removeEventListener`，防止内存泄漏。
 
 🌰3：
-```
+```javascript
 function func1() {
   var name  = 'Mopecat'
   window.setInterval(function() {
@@ -183,7 +183,7 @@ func1()
 
 简单的例子：
 
-```
+```javascript
 function numGenerator() {
     let num = 1
     num++
@@ -202,7 +202,7 @@ getNum()
 因此，直观上来看，闭包这个概念为 `JavaScript` 中访问函数内变量提供了途径和便利。所以闭包是前端进阶必备基础。
 
 接下来就看一些面试题来加深理解闭包：（都是求输出啥）
-```
+```javascript
 const foo = (function() {
     var v = 0
     return () => {
@@ -218,7 +218,7 @@ console.log(foo())
 ```
 在循环执行时，执行 `foo()`，这样引用自由变量 10 次，v 自增 10 次，最后执行 foo 时，得到 10。（自由变量是指没有在相关函数作用域中声明，但是使用了的变量。）
 
-```
+```javascript
 const foo = () => {
     var arr = []
     var i
@@ -236,7 +236,7 @@ foo()()
 ```
 答案：10，这时自由变量为 `i`，分析类似例题 1：`foo()` 执行返回的是 `arr[0]`,`arr[0]`是一个打印`i`的`function`而此时`i`的值是10
 
-```
+```javascript
 var fn = null
 const foo = () => {
     var a = 2
@@ -257,7 +257,7 @@ bar()
 正常来讲，根据调用栈的知识，`foo` 函数执行完毕之后，其执行环境生命周期会结束，所占内存被垃圾收集器释放，上下文消失。但是通过 `innerFoo` 函数赋值给 `fn`，`fn` 是全局变量，这就导致了 `foo `的变量对象 `a` 也被保留了下来。所以函数 `fn` 在函数 `bar` 内部执行时，依然可以访问这个被保留下来的变量对象，输出结果为 2。
 
 将上面的题稍作修改
-```
+```javascript
 var fn = null
 const foo = () => {
     var a = 2
@@ -285,7 +285,7 @@ bar()
 
 保证一个类只有一个实例，并提供一个访问它的全局访问点。
 使用闭包我们可以保持对实例的引用，不被垃圾回收机制回收，因此：
-```
+```javascript
 function Person() {
     this.name = 'lucas'
 }

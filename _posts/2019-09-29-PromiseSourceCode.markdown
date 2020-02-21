@@ -47,7 +47,7 @@ tags:
 编程界名言：`talk is cheap show me your code` 咳咳，我一直把他翻译成 => 敲起来吧我的宝贝们。
 
 🌰-1：基本用法也就是这样了
-```
+```javascript
 let p = new Promise((resolve, reject) => {
   resolve("success");
   throw new Error("失败"); //如果抛出异常也会执行成功
@@ -65,7 +65,7 @@ p.then(
 上述代码，打印success，就是说呢 resolve之后，即使是抛出错误也不会改变状态到失败，即状态一经改变不会再次更改
 
 🌰-2：
-```
+```javascript
 let p2 = new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve("resolve在then之后执行"); // 发布
@@ -102,7 +102,7 @@ p2.then(
 
 基于以上四个点可以写出一个这个类的大概架子
 
-```
+```javascript
 // 2. 有三种固定状态 => 常量
 const PENGDING = "PENGDING" // 等待状态
 const FULFILLED = "FULFILLED" // 成功状态
@@ -132,7 +132,7 @@ class Promise{
 7. 执行器传入的两个方法`resolve`和`reject`，需要将这两个方法定义在执行器之前，然后我们思考一下，这个方法里应该做些什么呢？
 这里解析一下： 首先我们可以知道，这两个方法分别对应着两个状态，所以我们可以知道，调用对应的方法时应该修改为对应的状态。其次我们可以知道，调用方法时是可以传参的，那我们需要把这个参数保存下来，因为后面的`then`方法的回调方法中的参数就是数据对应🌰-1中的就是'success'，传到`then`中的`data`
 
-```
+```javascript
 // 2. 有三种固定状态 => 常量
 const PENGDING = "PENGDING" // 等待状态
 const FULFILLED = "FULFILLED" // 成功状态
