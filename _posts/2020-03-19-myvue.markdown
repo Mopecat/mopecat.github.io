@@ -1,0 +1,20 @@
+---
+layout:     post
+title:      "vue的双向绑定……"
+subtitle:   "遇见问题&解决问题"
+date:       2020-03-19 18:22:00
+author:     "Mopecat"
+header-img: "img/post-bg-web.jpg"
+catalog: true
+tags:
+    - Javascript
+    - 面试
+---
+
+最近一段时间的面试每次都会被问到`vue`的双向绑定的实现,我确实也没研究过`Vue`的源码，就在网上看了一些答案理解一下，也没自己确切的实现过，导致每次答都不是很满意。
+
+我本着遇见问题，解决问题的原则。就去研究了一下，然后自己再敲一遍，加深一下印象。
+
+代码地址： https://github.com/Mopecat/MyVue
+
+回头再用ts写一个熟练一下
